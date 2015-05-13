@@ -1,3 +1,7 @@
+#Ariella Yamada Brambila 8937034
+#Nathalia Bindilatti Felippe 8937441
+
+
 .data
 .align 0
 
