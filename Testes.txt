@@ -1,0 +1,37 @@
+Testes:
+
+
+1º - 329:
+
+Entrada			Saída			Resultado
+-------------------------------------------
+Binário			Decimal			329
+				Hexadecimal		0x149
+				Octal			0ox511
+Decimal			Binário			101001001
+				Hexadecimal		0x149
+				Octal			0ox511
+Hexadecimal		Binário			101001001
+				Decimal			329
+				Octal			0ox511
+Octal			Binário			101001001
+				Decimal			329
+				Hexadecimal		0x149
+
+
+2º - 8547:
+
+Entrada			Saída			Resultado
+-------------------------------------------
+Binário			Decimal			8547
+				Hexadecimal		0x00002163
+				Octal			0o20543
+Decimal			Binário			10000101100011
+				Hexadecimal		0x2163
+				Octal			0o20543
+Hexadecimal		Binário			10000101100011
+				Decimal			8547
+				Octal			0o20543
+Octal			Binário			10000101100011
+				Decimal			8547
+				Hexadecimal		0x00002163
