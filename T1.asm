@@ -344,39 +344,67 @@ HOut:
 	sw $a0, 0($sp)
 	sw $ra, 4($sp)
 	
-	li $t2, 0	#valor inicial
-	li $t4, 1	#aux
-	li $t5, 10	#base
+	move $a0, $s1	#carrega o numero
+	li $a1, 16	#carrega a base
+	jal CountDig	#retorna o numero de digitos em $s2
 	
-
+	#aloca espaco na memoria para a string
+	li $v0, 9	#sbrk
+	add $a0, $zero, $s2	#tamanho
+	syscall
+	
+	move $s3, $v0	#endereco da memoria alocada
+	add $s3, $s3, $s2	#soma o endereco com o tamanho da string
+	
+	li $t0, '\0'
+	sb $t0, ($s3)
+	
 		loopHOut:
 			
 			beqz $s1, loopHOutEnd	#se o numero for zero
 			
-			andi $t3, $s1, 15	# num mod 15
+			subi $s3, $s3, 1	#decrementa o valor do endereco da string
 			
-			mul $t3, $t3, $t4	#multiplica o mod pela base
+			andi $t0, $s1, 15	# num mod 15
 			
-			mul $t4, $t4, $t5	#multiplica pela base para mudar a casa decimal
+			li $t2, 9
+			
+			ble $t0, $t2, loopHOut09
+			bgt $t0, $t2, loopHOutaf
+			
+			loopHOut09:
+			
+				addi $t0, $t0, '0'	#transforma em char
+				sb $t0, ($s3)	#armazena o digito no final da string
+				sra $s1, $s1, 4 	#divide o numero por 16
+			
+				j loopHOut
+			
+			loopHOutaf:
+			
+				subi $t0, $t0, 10	#valor de 0 a 5
+				addi $t0, $t0, 'a'	#transforma em char
+				sb $t0, ($s3)	#armazena o digito no final da string
+				sra $s1, $s1, 4 	#divide o numero por 16
+			
+				j loopHOut
+			
+loopHOutEnd:
+	
+	move $s1, $t2	#carrega o resultado em octal para $s1
+	
+	li $v0, 4
+	la $a0, strHex
+	syscall
 
-			add $t2, $t2, $t3	#adiciona o mod no numero final
-			
-			sra $s1, $s1, 4 	#divide o numero por 16
-			
-			j loopHOut
-			
-	loopHOutEnd:	
-		lw $a0, 0($sp)
-		lw $ra, 4($sp)
-		addi $sp, $sp, 8
+	move $a1, $s3	#move a string para $a1
+	jal printStr
 	
-		move $s1, $t2	#carrega o resultado em octal para $s1
+	lw $a0, 0($sp)
+	lw $ra, 4($sp)
+	addi $sp, $sp, 8
 	
-		li $v0, 4
-		la $a0, strHex
-		syscall
-	
-		j DOut	
+	j Inicio
 
 OOut:
 	addi $sp, $sp, -8
